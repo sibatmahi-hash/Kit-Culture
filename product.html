@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Details</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .container { display: flex; gap: 30px; }
+    .details { max-width: 400px; }
+    .buy-btn { background-color: #f57224; color: white; padding: 10px 20px; border: none; font-size: 16px; cursor: pointer; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html">← Back to Shop</a>
+
+  <div class="container" style="margin-top: 20px;">
+    <img id="jersey-img" src="" width="300" alt="Jersey Image">
+    <div class="details">
+      <h1 id="jersey-title">Loading...</h1>
+      <h2 id="jersey-price"></h2>
+      
+      <label for="size">Select Size:</label>
+      <select id="size">
+        <option>Medium (M)</option>
+        <option>Large (L)</option>
+        <option>Extra Large (XL)</option>
+      </select>
+      
+      <br><br>
+      <button class="buy-btn" onclick="goToCheckout()">Buy Now</button>
+    </div>
+  </div>
+
+  <script>
+    // Database simulation (replace with database/backend later)
+const products ={
+  "101": { name: "Argentina Home Jersey", price: "900 BDT", image: "Screenshot 2026-08-06 212148.png" },
+  "102": { name: "Real Madrid Home Jersey", price: "900 BDT", image: "Screenshot 2026-08-06 215419.png"},
+  "103": { name: "Barcelona Home Jersey", price: "900 BDT", image: "C:\Users\User\Pictures\Screenshots\Screenshot 2026-08-07 100954.png"}};
+  
+ document.getElementById('jersey-title').innerText = "Product Not Found";
+    function goToCheckout() {
+  const selectedSize = document.getElementById('size').value;
+  if (productId) {
+    window.location.href = `checkout.html?id=${productId}&size=${selectedSize}`;
+  }
+}
+
+
+
+    // Extract product ID from URL query parameters (?id=101)
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+
+    // Populate page content based on URL ID
+    if (products[productId]) {
+      document.getElementById('jersey-title').innerText = products[productId].name;
+      document.getElementById('jersey-price').innerText = products[productId].price;
+      document.getElementById('jersey-img').src = products[productId].image;
+    } else {
+     }
+  </script>
+
+</body>
+</html>
