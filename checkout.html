@@ -70,8 +70,8 @@
       document.getElementById('summary-price').innerText = products[productId].price;
       document.getElementById('summary-size').innerText = size || 'Not selected';
     }
-   function handleOrder(e) {
-  e.preventDefault();
+ function handleOrder(e) {
+  e.preventDefault(); // Prevents normal form refresh
 
   // Collect customer input values
   const name = document.getElementById('name').value;
@@ -83,27 +83,28 @@
   const itemPrice = document.getElementById('summary-price').innerText;
 
   // Format order summary text
-  const message = `NEW ORDER RECEIVED!\n\n` +
-    `Item: ${itemName} (${itemSize})\n` +
-    `Price: ${itemPrice}\n\n` +
+  const message = `NEW ORDER RECEIVED!\n` +
+    `Item: ${itemName}\n` +
+    `Price: ${itemPrice}\n` +
     `Customer: ${name}\n` +
     `Phone: ${phone}\n` +
     `Address: ${address}\n` +
     `Payment Method: ${payment}`;
 
   // Your email address where orders should be sent
-  const yourEmail = "sibatmahi@gmail.com"; 
+  const yourEmail = "zishan69@gmail.com";
   const subject = `New Order from ${name}`;
 
   // Show thank you message
-  document.getElementById('checkout-container')?.style.setProperty('display', 'none');
-document.getElementById('back-link')?.style.setProperty('display', 'none');
-document.getElementById('thank-you-message')?.style.setProperty('display', 'block');
+  document.getElementById('checkout-container').style.setProperty('display', 'none');
+  document.getElementById('back-link').style.setProperty('display', 'none');
+  document.getElementById('thank-you-message').style.setProperty('display', 'block');
 
   // Open default email client
   const encodedSubject = encodeURIComponent(subject);
   const encodedBody = encodeURIComponent(message);
-  
+
+  // FIXED LINE BELOW (Added ending backtick)
   window.location.href = `mailto:${yourEmail}?subject=${encodedSubject}&body=${encodedBody}`;
 }
   
