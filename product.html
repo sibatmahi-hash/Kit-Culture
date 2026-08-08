@@ -20,47 +20,61 @@
       <h1 id="jersey-title">Loading...</h1>
       <h2 id="jersey-price"></h2>
       
+      <!-- New details field -->
+      <p id="jersey-details"></p>
+
       <label for="size">Select Size:</label>
       <select id="size">
         <option>Medium (M)</option>
         <option>Large (L)</option>
         <option>Extra Large (XL)</option>
       </select>
-      
+
       <br><br>
       <button class="buy-btn" onclick="goToCheckout()">Buy Now</button>
     </div>
   </div>
 
   <script>
-    // Database simulation (replace with database/backend later)
-const products ={
-  "101": { name: "Argentina Home Jersey", price: "900 BDT", image: "Screenshot 2026-08-06 212148.png" },
-  "102": { name: "Real Madrid Home Jersey", price: "900 BDT", image: "Screenshot 2026-08-06 215419.png"},
-  "103": { name: "Barcelona Home Jersey", price: "900 BDT", image: "Screenshot 2026-08-07 100954.png"}};
-  
- document.getElementById('jersey-title').innerText = "Product Not Found";
-    function goToCheckout() {
-  const selectedSize = document.getElementById('size').value;
-  if (productId) {
-    window.location.href = `checkout.html?id=${productId}&size=${selectedSize}`;
-  }
-}
+    const products = {
+      "101": { 
+        name: "Argentina Home Jersey", 
+        price: "900 BDT", 
+        image: "Screenshot 2026-08-06 212148.png",
+        details: "100% Polyester, breathable fabric, standard fit."
+      },
+      "102": { 
+        name: "Real Madrid Home Jersey", 
+        price: "900 BDT", 
+        image: "Screenshot 2026-08-06 215419.png",
+        details: "Official club crest, moisture-absorbing AEROREADY technology."
+      },
+      "103": { 
+        name: "Barcelona Home Jersey", 
+        price: "900 BDT", 
+        image: "Screenshot 2026-08-07 100954.png",
+        details: "Lightweight fabric, classic striped design."
+      }
+    };
 
-
-
-    // Extract product ID from URL query parameters (?id=101)
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
-    // Populate page content based on URL ID
     if (products[productId]) {
       document.getElementById('jersey-title').innerText = products[productId].name;
       document.getElementById('jersey-price').innerText = products[productId].price;
       document.getElementById('jersey-img').src = products[productId].image;
+      document.getElementById('jersey-details').innerText = products[productId].details;
     } else {
-     }
-  </script>
+      document.getElementById('jersey-title').innerText = "Product Not Found";
+    }
 
+    function goToCheckout() {
+      const selectedSize = document.getElementById('size').value;
+      if (productId) {
+        window.location.href = `checkout.html?id=${productId}&size=${selectedSize}`;
+      }
+    }
+  </script>
 </body>
 </html>
