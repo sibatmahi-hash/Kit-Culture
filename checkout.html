@@ -81,41 +81,41 @@
       document.getElementById('summary-size').innerText = size ? size : 'Not selected';
     }
 
-    function handleOrder(e) {
-      e.preventDefault(); // Prevents normal form refresh
+ // Initialize EmailJS with your Public Key
+emailjs.init("YOUR_PUBLIC_KEY");
 
-      // Collect customer input values
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const address = document.getElementById('address').value;
-      const payment = document.getElementById('payment-method').value;
-      const itemName = document.getElementById('summary-name').innerText;
-      const itemSize = document.getElementById('summary-size').innerText;
-      const itemPrice = document.getElementById('summary-price').innerText;
+function handleOrder(e) {
+    e.preventDefault();
 
-      // Format order summary text
-      const message = `NEW ORDER RECEIVED!\n\n` +
-        `Item: ${itemName} (${itemSize})\n` +
-        `Price: ${itemPrice}\n\n` +
-        `Customer Name: ${name}\n` +
-        `Phone: ${phone}\n` +
-        `Address: ${address}\n` +
-        `Payment Method: ${payment}`;
+    // Collect customer input values
+    const name = document.getElementById('name').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
+    const payment = document.getElementById('payment-method').value;
+    const itemName = document.getElementById('summary-name').innerText;
+    const itemSize = document.getElementById('summary-size').innerText;
+    const itemPrice = document.getElementById('summary-price').innerText;
 
-      const yourEmail = "sibatmahi@gmail.com";
-      const subject = `New Order from ${name}`;
-
-      // Hide checkout form and show success message
-      document.getElementById('checkout-container').style.display = 'none';
-      document.getElementById('back-link').style.display = 'none';
-      document.getElementById('thank-you-message').style.display = 'block';
-
-      // Open default email client
-      const encodedSubject = encodeURIComponent(subject);
-      const encodedBody = encodeURIComponent(message);
-
-      window.location.href = `mailto:${yourEmail}?subject=${encodedSubject}&body=${encodedBody}`;
-    }
+    // Send email via EmailJS
+    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+        to_email: "sibatmahi@gmail.com",
+        customer_name: name,
+        customer_phone: phone,
+        customer_address: address,
+        payment_method: payment,
+        item_name: itemName,
+        item_size: itemSize,
+        item_price: itemPrice
+    }).then(function(response) {
+        // Show thank you message only after email sends successfully
+        document.getElementById('checkout-container')?.style.setProperty('display', 'none');
+        document.getElementById('back-link')?.style.setProperty('display', 'none');
+        document.getElementById('thank-you-message')?.style.setProperty('display', 'block');
+    }, function(error) {
+        alert("Failed to place order. Please try again.");
+        console.error("EmailJS Error:", error);
+    });
+}
   </script>
 </body>
 </html>
