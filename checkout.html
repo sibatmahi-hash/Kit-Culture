@@ -4,17 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkout</title>
-    <!-- Include EmailJS SDK -->
+    
+    <!-- 1. Place CDN script inside <head> without async/defer attributes -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 5px; }
-        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-        button { background: #28a745; color: white; border: none; padding: 10px; width: 100%; font-size: 16px; cursor: pointer; }
-        #thank-you-message { display: none; background: #e9f7ef; padding: 20px; border-radius: 4px; text-align: center; border: 1px solid #28a745; }
-    </style>
 </head>
 <body>
 
@@ -64,15 +56,18 @@
     <h2>Thank You!</h2>
     <p>Your order request has been processed. Check your inbox for confirmation.</p>
 </div>
-
-<script>
-    // Initialize EmailJS with your Public Key
-    (function() {
-        // REPLACE WITH YOUR ACTUAL EMAILJS PUBLIC KEY
-        emailjs.init({
-            publicKey: "YOUR_PUBLIC_KEY" 
-        });
-    })();
+ <script>
+    // Initialize EmailJS safely after window fully loads
+    window.onload = function() {
+        if (typeof emailjs !== 'undefined') {
+            emailjs.init({
+                publicKey: "YOUR_PUBLIC_KEY" // Replace with your actual Public Key
+            });
+            console.log("EmailJS loaded successfully.");
+        } else {
+            console.error("EmailJS failed to load. Check your internet connection.");
+        }
+    };
 
     const products = {
         "101": { name: "Argentina Home Jersey", price: "799 BDT" },
@@ -85,7 +80,6 @@
     const productId = urlParams.get('id');
     const size = urlParams.get('size');
 
-    // Render details in the Order Summary section
     if (products[productId]) {
         document.getElementById('summary-name').innerText = products[productId].name;
         document.getElementById('summary-price').innerText = products[productId].price;
@@ -95,7 +89,12 @@
     function handleOrder(e) {
         e.preventDefault();
 
-        // Collect customer input values
+        // Safety check before sending
+        if (typeof emailjs === 'undefined') {
+            alert("Email service is still loading or blocked. Please refresh the page.");
+            return;
+        }
+
         const name = document.getElementById('name').value;
         const phone = document.getElementById('phone').value;
         const address = document.getElementById('address').value;
@@ -104,8 +103,6 @@
         const itemSize = document.getElementById('summary-size').innerText;
         const itemPrice = document.getElementById('summary-price').innerText;
 
-        // Send email via EmailJS
-        // REPLACE "YOUR_SERVICE_ID" AND "YOUR_TEMPLATE_ID" WITH YOUR ACTUAL EMAILJS CREDS
         emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
             to_email: "sibatmahi@gmail.com",
             customer_name: name,
@@ -116,7 +113,6 @@
             item_size: itemSize,
             item_price: itemPrice
         }).then(function(response) {
-            // Show thank you message only after email sends successfully
             document.getElementById('checkout-container')?.style.setProperty('display', 'none');
             document.getElementById('back-link')?.style.setProperty('display', 'none');
             document.getElementById('thank-you-message')?.style.setProperty('display', 'block');
@@ -126,6 +122,5 @@
         });
     }
 </script>
-
 </body>
 </html>
