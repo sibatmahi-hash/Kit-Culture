@@ -1,72 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Checkout</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: 0 auto; }
-    .order-summary { background: #f9f9f9; padding: 15px; border-radius: 4px; margin-bottom: 20px; border: 1px solid #ddd; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; font-weight: bold; margin-bottom: 5px; }
-    input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
-    .btn { background-color: #28a745; color: white; border: none; padding: 12px; width: 100%; font-size: 16px; cursor: pointer; }
-    #thank-you-message { display: none; background: #e9f7ef; padding: 20px; border-radius: 4px; text-align: center; border: 1px solid #28a745; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <!-- Include EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .order-summary { background: #f9f9f9; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; padding: 10px; width: 100%; font-size: 16px; cursor: pointer; }
+        #thank-you-message { display: none; background: #e9f7ef; padding: 20px; border-radius: 4px; text-align: center; border: 1px solid #28a745; }
+    </style>
 </head>
 <body>
 
-  <a id="back-link" href="index.html">← Back to Shop</a>
-  <h2>Complete Your Order</h2>
+<a id="back-link" href="index.html">&larr; Back to Shop</a>
+<h2>Complete Your Order</h2>
 
-  <div id="checkout-container">
+<div id="checkout-container">
     <!-- Dynamic Order Summary -->
     <div class="order-summary">
-      <h3>Order Details</h3>
-      <p><strong>Item:</strong> <span id="summary-name">Loading...</span></p>
-      <p><strong>Size:</strong> <span id="summary-size"></span></p>
-      <p><strong>Total Price:</strong> <span id="summary-price"></span></p>
+        <h3>Order Summary</h3>
+        <p><strong>Item:</strong> <span id="summary-name">Loading...</span></p>
+        <p><strong>Size:</strong> <span id="summary-size"></span></p>
+        <p><strong>Total Price:</strong> <span id="summary-price"></span></p>
     </div>
 
     <form id="checkout-form" onsubmit="handleOrder(event)">
-      <div class="form-group">
-        <label for="name">Full Name</label>
-        <input type="text" id="name" required>
-      </div>
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" required>
+        </div>
 
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="tel" id="phone" required>
-      </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required>
+        </div>
 
-      <div class="form-group">
-        <label for="address">Delivery Address</label>
-        <textarea id="address" rows="3" required></textarea>
-      </div>
+        <div class="form-group">
+            <label for="address">Delivery Address</label>
+            <textarea id="address" rows="3" required></textarea>
+        </div>
 
-      <div class="form-group">
-        <label for="payment-method">Payment Method</label>
-        <select id="payment-method">
-          <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-          <option value="bkash">bKash (Send Money)</option>
-          <option value="nagad">Nagad (Send Money)</option>
-        </select>
-      </div>
+        <div class="form-group">
+            <label for="payment-method">Payment Method</label>
+            <select id="payment-method">
+                <option value="bKash (Send Money)">bKash (Send Money)</option>
+                <option value="Nagad (Send Money)">Nagad (Send Money)</option>
+                <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+            </select>
+        </div>
 
-      <button type="submit" class="btn">Confirm Order</button>
+        <button type="submit" class="btn">Confirm Order</button>
     </form>
-  </div>
+</div>
 
-  <!-- Thank You Message -->
-  <div id="thank-you-message">
+<!-- Thank You Message -->
+<div id="thank-you-message">
     <h2>Thank You!</h2>
-    <p>Your order request has been generated. Opening your email app to send details...</p>
-  </div>
+    <p>Your order request has been processed. Check your inbox for confirmation.</p>
+</div>
 
-  <script>
+<script>
+    // Initialize EmailJS with your Public Key
+    (function() {
+        // REPLACE WITH YOUR ACTUAL EMAILJS PUBLIC KEY
+        emailjs.init({
+            publicKey: "YOUR_PUBLIC_KEY" 
+        });
+    })();
+
     const products = {
-      "101": { name: "Argentina Home Jersey", price: "900 BDT" },
-      "102": { name: "Real Madrid Home Jersey", price: "900 BDT" },
-      "103": { name: "Barcelona Home Jersey", price: "900 BDT" }
+        "101": { name: "Argentina Home Jersey", price: "799 BDT" },
+        "102": { name: "Real Madrid Home Jersey", price: "900 BDT" },
+        "103": { name: "Barcelona Home Jersey", price: "900 BDT" }
     };
 
     // Extract product ID and size from URL parameters
@@ -74,48 +85,47 @@
     const productId = urlParams.get('id');
     const size = urlParams.get('size');
 
-    // Render details in the Order Details summary section
+    // Render details in the Order Summary section
     if (products[productId]) {
-      document.getElementById('summary-name').innerText = products[productId].name;
-      document.getElementById('summary-price').innerText = products[productId].price;
-      document.getElementById('summary-size').innerText = size ? size : 'Not selected';
+        document.getElementById('summary-name').innerText = products[productId].name;
+        document.getElementById('summary-price').innerText = products[productId].price;
+        document.getElementById('summary-size').innerText = size || 'Not selected';
     }
 
- // Initialize EmailJS with your Public Key
-emailjs.init("YOUR_PUBLIC_KEY");
+    function handleOrder(e) {
+        e.preventDefault();
 
-function handleOrder(e) {
-    e.preventDefault();
+        // Collect customer input values
+        const name = document.getElementById('name').value;
+        const phone = document.getElementById('phone').value;
+        const address = document.getElementById('address').value;
+        const payment = document.getElementById('payment-method').value;
+        const itemName = document.getElementById('summary-name').innerText;
+        const itemSize = document.getElementById('summary-size').innerText;
+        const itemPrice = document.getElementById('summary-price').innerText;
 
-    // Collect customer input values
-    const name = document.getElementById('name').value;
-    const phone = document.getElementById('phone').value;
-    const address = document.getElementById('address').value;
-    const payment = document.getElementById('payment-method').value;
-    const itemName = document.getElementById('summary-name').innerText;
-    const itemSize = document.getElementById('summary-size').innerText;
-    const itemPrice = document.getElementById('summary-price').innerText;
+        // Send email via EmailJS
+        // REPLACE "YOUR_SERVICE_ID" AND "YOUR_TEMPLATE_ID" WITH YOUR ACTUAL EMAILJS CREDS
+        emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
+            to_email: "sibatmahi@gmail.com",
+            customer_name: name,
+            customer_phone: phone,
+            customer_address: address,
+            payment_method: payment,
+            item_name: itemName,
+            item_size: itemSize,
+            item_price: itemPrice
+        }).then(function(response) {
+            // Show thank you message only after email sends successfully
+            document.getElementById('checkout-container')?.style.setProperty('display', 'none');
+            document.getElementById('back-link')?.style.setProperty('display', 'none');
+            document.getElementById('thank-you-message')?.style.setProperty('display', 'block');
+        }, function(error) {
+            alert("Failed to place order. Please try again.");
+            console.error("EmailJS Error:", error);
+        });
+    }
+</script>
 
-    // Send email via EmailJS
-    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", {
-        to_email: "sibatmahi@gmail.com",
-        customer_name: name,
-        customer_phone: phone,
-        customer_address: address,
-        payment_method: payment,
-        item_name: itemName,
-        item_size: itemSize,
-        item_price: itemPrice
-    }).then(function(response) {
-        // Show thank you message only after email sends successfully
-        document.getElementById('checkout-container')?.style.setProperty('display', 'none');
-        document.getElementById('back-link')?.style.setProperty('display', 'none');
-        document.getElementById('thank-you-message')?.style.setProperty('display', 'block');
-    }, function(error) {
-        alert("Failed to place order. Please try again.");
-        console.error("EmailJS Error:", error);
-    });
-}
-  </script>
 </body>
 </html>
