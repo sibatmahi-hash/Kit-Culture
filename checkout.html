@@ -1,74 +1,211 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
-    
-    <!-- 1. Place CDN script inside <head> without async/defer attributes -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout</title>
+
+  <!-- 1. EmailJS SDK -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- 2. CSS Styling -->
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 40px 15px;
+      color: #333;
+    }
+
+    .wrapper {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    #back-link {
+      color: #551a8b;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      margin-bottom: 20px;
+      transition: color 0.2s ease;
+    }
+
+    #back-link:hover {
+      color: #330066;
+      text-decoration: underline;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 20px;
+      font-size: 24px;
+      color: #1a1a1a;
+    }
+
+    /* Order Summary Box */
+    .order-summary {
+      background-color: #f9fbfd;
+      border: 1px solid #e1e8ed;
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 25px;
+    }
+
+    .order-summary h3 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 17px;
+      color: #2c3e50;
+    }
+
+    .order-summary p {
+      margin: 8px 0;
+      font-size: 15px;
+      color: #4a5568;
+    }
+
+    /* Form Fields */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #2d3748;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e0;
+      border-radius: 6px;
+      font-size: 15px;
+      background-color: #fff;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #3182ce;
+      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+    }
+
+    /* Button */
+    .btn {
+      width: 100%;
+      background-color: #22a447;
+      color: #ffffff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      margin-top: 5px;
+    }
+
+    .btn:hover {
+      background-color: #1c873a;
+    }
+
+    /* Thank You Message */
+    #thank-you-message {
+      display: none; /* Hidden by default */
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    #thank-you-message h2 {
+      color: #22a447;
+    }
+  </style>
 </head>
 <body>
 
-<a id="back-link" href="index.html">&larr; Back to Shop</a>
-<h2>Complete Your Order</h2>
+  <div class="wrapper">
+    <a id="back-link" href="index.html">&larr; Back to Shop</a>
 
-<div id="checkout-container">
-    <!-- Dynamic Order Summary -->
-    <div class="order-summary">
+    <div class="card" id="checkout-container">
+      <h2>Complete Your Order</h2>
+
+      <!-- Dynamic Order Summary -->
+      <div class="order-summary">
         <h3>Order Summary</h3>
         <p><strong>Item:</strong> <span id="summary-name">Loading...</span></p>
         <p><strong>Size:</strong> <span id="summary-size"></span></p>
         <p><strong>Total Price:</strong> <span id="summary-price"></span></p>
-    </div>
+      </div>
 
-    <form id="checkout-form" onsubmit="handleOrder(event)">
+      <form id="checkout-form" onsubmit="handleOrder(event)">
         <div class="form-group">
-            <label for="name">Full Name</label>
-            <input type="text" id="name" required>
+          <label for="name">Full Name</label>
+          <input type="text" id="name" required>
         </div>
 
         <div class="form-group">
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" required>
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required>
         </div>
 
         <div class="form-group">
-            <label for="address">Delivery Address</label>
-            <textarea id="address" rows="3" required></textarea>
+          <label for="address">Delivery Address</label>
+          <textarea id="address" rows="3" required></textarea>
         </div>
 
         <div class="form-group">
-            <label for="payment-method">Payment Method</label>
-            <select id="payment-method">
-                <option value="bKash (Send Money)">bKash (Send Money)</option>
-                <option value="Nagad (Send Money)">Nagad (Send Money)</option>
-                <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
-            </select>
+          <label for="payment-method">Payment Method</label>
+          <select id="payment-method">
+            <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+          </select>
         </div>
 
         <button type="submit" class="btn">Confirm Order</button>
-    </form>
-</div>
+      </form>
+    </div>
 
-<!-- Thank You Message -->
-<div id="thank-you-message">
-    <h2>Thank You!</h2>
-    <p>Your order request has been processed. Check your inbox for confirmation.</p>
-</div>
- <script>
- // Initialize EmailJS safely after window fully loads
-window.onload = function() {
-    if (typeof emailjs !== 'undefined') {
+    <!-- Thank You Message -->
+    <div class="card" id="thank-you-message">
+      <h2>Thank You!</h2>
+      <p>Your order request has been processed. Check your inbox for confirmation.</p>
+    </div>
+  </div>
+
+  <script>
+    // Initialize EmailJS safely
+    window.onload = function() {
+      if (typeof emailjs !== 'undefined') {
         emailjs.init("FyiwLZMaIvs-p2uWp");
         console.log("EmailJS loaded successfully.");
-    } else {
+      } else {
         console.error("EmailJS failed to load. Check your internet connection.");
-    }};
+      }
+    };
+
     const products = {
-        "101": { name: "Argentina Home Jersey", price: "1150 BDT" },
-        "102": { name: "Real Madrid Home Jersey", price: "900 BDT" },
-        "103": { name: "Barcelona Home Jersey", price: "900 BDT" }
+      "101": { name: "Argentina Home Jersey", price: "1150 BDT" },
+      "102": { name: "Real Madrid Home Jersey", price: "900 BDT" },
+      "103": { name: "Barcelona Home Jersey", price: "900 BDT" }
     };
 
     // Extract product ID and size from URL parameters
@@ -77,46 +214,52 @@ window.onload = function() {
     const size = urlParams.get('size');
 
     if (products[productId]) {
-        document.getElementById('summary-name').innerText = products[productId].name;
-        document.getElementById('summary-price').innerText = products[productId].price;
-        document.getElementById('summary-size').innerText = size || 'Not selected';
+      document.getElementById('summary-name').innerText = products[productId].name;
+      document.getElementById('summary-price').innerText = products[productId].price;
+      document.getElementById('summary-size').innerText = size || 'Not selected';
     }
 
     function handleOrder(e) {
-        e.preventDefault();
+      e.preventDefault();
 
-        // Safety check before sending
-        if (typeof emailjs === 'undefined') {
-            alert("Email service is still loading or blocked. Please refresh the page.");
-            return;
-        }
+      if (typeof emailjs === 'undefined') {
+        alert("Email service is still loading or blocked. Please refresh the page.");
+        return;
+      }
 
-        const name = document.getElementById('name').value;
-        const phone = document.getElementById('phone').value;
-        const address = document.getElementById('address').value;
-        const payment = document.getElementById('payment-method').value;
-        const itemName = document.getElementById('summary-name').innerText;
-        const itemSize = document.getElementById('summary-size').innerText;
-        const itemPrice = document.getElementById('summary-price').innerText;
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      const payment = document.getElementById('payment-method').value;
+      const itemName = document.getElementById('summary-name').innerText;
+      const itemSize = document.getElementById('summary-size').innerText;
+      const itemPrice = document.getElementById('summary-price').innerText;
 
-        emailjs.send("service_7s9nrom", "template_ynusoe5", {
-            to_email: "sibatmahi@gmail.com",
-            customer_name: name,
-            customer_phone: phone,
-            customer_address: address,
-            payment_method: payment,
-            item_name: itemName,
-            item_size: itemSize,
-            item_price: itemPrice
-        }).then(function(response) {
-            document.getElementById('checkout-container')?.style.setProperty('display', 'none');
-            document.getElementById('back-link')?.style.setProperty('display', 'none');
-            document.getElementById('thank-you-message')?.style.setProperty('display', 'block');
-        }, function(error) {
-            alert("Failed to place order. Please try again.");
-            console.error("EmailJS Error:", error);
-        });
+      // Disable button while sending
+      const submitBtn = e.target.querySelector('button[type="submit"]');
+      submitBtn.innerText = "Processing...";
+      submitBtn.disabled = true;
+
+      emailjs.send("service_7s9nrom", "template_ynusoe5", {
+        to_email: "sibatmahi@gmail.com",
+        customer_name: name,
+        customer_phone: phone,
+        customer_address: address,
+        payment_method: payment,
+        item_name: itemName,
+        item_size: itemSize,
+        item_price: itemPrice
+      }).then(function(response) {
+        document.getElementById('checkout-container').style.display = 'none';
+        document.getElementById('back-link').style.display = 'none';
+        document.getElementById('thank-you-message').style.display = 'block';
+      }, function(error) {
+        alert("Failed to place order. Please try again.");
+        console.error("EmailJS Error:", error);
+        submitBtn.innerText = "Confirm Order";
+        submitBtn.disabled = false;
+      });
     }
-</script>
+  </script>
 </body>
 </html>
