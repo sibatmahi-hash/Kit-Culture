@@ -167,7 +167,10 @@
           <label for="phone">Phone Number</label>
           <input type="tel" id="phone" required>
         </div>
-
+         <div class="form-group">
+          <label for="gmail">Your Gmail</label>
+          <input type="tel" id="gmail" required>
+        </div>
         <div class="form-group">
           <label for="address">Delivery Address</label>
           <textarea id="address" rows="3" required></textarea>
@@ -229,6 +232,7 @@
 
       const name = document.getElementById('name').value;
       const phone = document.getElementById('phone').value;
+      const gmail = document.getElementById('gmail').value;
       const address = document.getElementById('address').value;
       const payment = document.getElementById('payment-method').value;
       const itemName = document.getElementById('summary-name').innerText;
@@ -244,6 +248,7 @@
         to_email: "sibatmahi@gmail.com",
         customer_name: name,
         customer_phone: phone,
+        customer_gmail: gmail,
         customer_address: address,
         payment_method: payment,
         item_name: itemName,
