@@ -1,47 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
+  <!-- মোবাইল ভিউ সুন্দর দেখানোর জন্য Viewport Meta Tag -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details</title>
+  
   <style>
     body { 
       font-family: sans-serif; 
       padding: 20px; 
+      background-color: #f9f9f9;
+      margin: 0;
     }
+
     .container { 
       display: flex; 
       gap: 30px; 
-    }
-    .details { 
-      max-width: 400px; 
-    }
-    .buy-btn { 
-      background-color: #f57224; 
-      color: white; 
-      padding: 10px 20px; 
-      border: none; 
-      font-size: 16px; 
-      cursor: pointer; 
-      border-radius: 4px; 
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    /* Multi-Image Gallery Styles */
+    /* গ্যালারি স্টাইল */
     .gallery-container {
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
+
     #jersey-img {
       border-radius: 6px;
       object-fit: cover;
+      border: 1px solid #eee;
     }
+
     .thumbnail-list {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       max-width: 300px;
     }
+
     .thumbnail {
       width: 55px;
       height: 55px;
@@ -51,14 +54,129 @@
       cursor: pointer;
       transition: border-color 0.2s ease;
     }
+
     .thumbnail.active, .thumbnail:hover {
-      border-color: #f57224;
+      border-color: #2563eb; /* ব্লু বা যেকোনো থিম কালার */
     }
-    /* Mobile Responsive Styles */
+
+    /* ডিটেইলস ও অর্ডার সেকশন */
+    .details { 
+      flex: 1;
+      max-width: 500px; 
+    }
+
+    #jersey-title {
+      font-size: 22px;
+      margin-top: 0;
+    }
+
+    #jersey-price {
+      color: #2563eb;
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+
+    .order-box {
+      margin: 15px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .buy-btn { 
+      background-color: #2e0dc4; 
+      color: white; 
+      padding: 12px; 
+      border: none; 
+      font-size: 16px; 
+      font-weight: bold;
+      cursor: pointer; 
+      border-radius: 5px; 
+      width: 100%;
+    }
+
+    .buy-btn:hover {
+      background-color: #14e259;
+    }
+
+    /* ফেব্রিক ডিটেইলস কার্ড */
+    .details-card {
+      background-color: #f2f3f7;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .details-card h3 {
+      margin-top: 0;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .details-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: #555;
+    }
+
+    /* বাংলা ডিসক্রিপশন */
+    .product-description {
+      margin-top: 20px;
+      line-height: 1.6;
+      color: #2c2c2c;
+    }
+
+    .product-description h3 {
+      font-size: 18px;
+      color: #111;
+      margin-bottom: 12px;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 20px 0;
+    }
+
+    .feature-list li {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .info-section {
+      margin-bottom: 15px;
+    }
+
+    .info-section h4 {
+      margin: 0 0 4px 0;
+      font-size: 15px;
+      color: #111;
+    }
+
+    .info-section p {
+      margin: 2px 0;
+      font-size: 13.5px;
+      color: #444;
+    }
+
+    /* মোবাইল ভিউ রেসপন্সিভ CS S */
     @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
       .container {
         flex-direction: column;
         gap: 20px;
+        padding: 15px;
       }
       #jersey-img {
         width: 100%;
@@ -70,99 +188,142 @@
       .details {
         max-width: 100%;
       }
-      .buy-btn {
-        width: 100%;
-        padding: 14px;
-        font-size: 18px;
-      }
     }
   </style>
 </head>
 <body>
 
-  <a href="index.html">← Back to Shop</a>
+  <a href="index.html" style="text-decoration: none; color: #555; font-weight: bold;">← Back to Shop</a>
 
-  <div class="container" style="margin-top: 20px;">
+  <div class="container" style="margin-top: 15px;">
     
-    <!-- Image & Gallery Section -->
+    <!-- ইমেজেস সেকশন -->
     <div class="gallery-container">
       <img id="jersey-img" src="" width="300" alt="Jersey Image">
       <div id="thumbnail-list" class="thumbnail-list"></div>
     </div>
 
-    <!-- Product Details Section -->
+    <!-- তথ্য ও অর্ডার সেকশন -->
     <div class="details">
       <h1 id="jersey-title">Loading...</h1>
       <h2 id="jersey-price"></h2>
-      <p id="jersey-details"></p>
 
-      <label for="size">Select Size:</label>
-      <select id="size">
-        <option>Medium (M)</option>
-        <option>Large (L)</option>
-        <option>Extra Large (XL)</option>
-      </select>
+      <!-- সাইজ সিলেক্টর ও বাই বাটন -->
+      <div class="order-box">
+        <label for="size"><strong>সাইজ সিলেক্ট করুন:</strong></label>
+        <select id="size">
+          <option>Medium (M)</option>
+          <option>Large (L)</option>
+          <option>Extra Large (XL)</option>
+          <option>Double Extra Large (XXL)</option>
+        </select>
 
-      <br><br>
-      <button class="buy-btn" onclick="goToCheckout()">Buy Now</button>
+        <button class="buy-btn" onclick="goToCheckout()">Order Now</button>
+      </div>
+
+      <!-- ফেব্রিক ডিটেইলস কার্ড -->
+      <div class="details-card">
+        <h3>Details:</h3>
+        <div class="details-row">
+          <span>Fabric</span>
+          <span id="jersey-fabric">Mesh Fabric + Chinigura Fabric</span>
+        </div>
+      </div>
+
+      <!-- বিবরণ সেকশন -->
+      <div class="product-description">
+        <h3 id="desc-title"> প্রিমিয়াম জার্সি </h3>
+        
+        <ul class="feature-list">
+          <li>✅ প্রিমিয়াম কোয়ালিটির ম্যাশ + চাইনিজ ফেব্রিক।</li>
+          <li>✅ সব লোগো এমব্রয়ডারি (সেলাই করা) — প্রিন্ট নয়।</li>
+          <li>✅ সামনে ও পেছনে একই ডিজাইন ও কালার ফিনিশ।</li>
+          <li>✅ 💯% রঙ ও সেলাই গ্যারান্টি।</li>
+        </ul>
+
+        <div class="info-section">
+          <h4>Size Mejarment</h4>
+          <p>M: লম্বা – ২৭", বুক – ৩৮"</p>
+          <p>L: লম্বা – ২৮", বুক – ৪০"</p>
+          <p>XL: লম্বা – ২৯", বুক – ৪২"</p>
+          <p>XXL: লম্বা – ৩০", বুক – ৪৪"</p>
+        </div>
+
+        <div class="info-section">
+          <h4>🔰 বিশেষ অনুরোধ:</h4>
+          <p>অর্ডার কনফার্ম করার আগে দয়া করে সাইজ মেপে নিশ্চিত হয়ে নিন, যাতে জার্সিটি একদম পারফেক্ট ফিট হয়।</p>
+        </div>
+
+        <div class="info-section">
+          <h4>📦 বিশেষ সুবিধা:</h4>
+          <p>ডেলিভারি ম্যানের সামনে জার্সি চেক করে নিতে পারবেন ✔️</p>
+        </div>
+
+        <div class="info-section">
+          <p>⏳ <strong>স্টক সীমিত!</strong> স্টক শেষ হওয়ার আগেই এখনই অর্ডার কনফার্ম করুন </p>
+        </div>
+      </div>
+
     </div>
 
   </div>
 
   <script>
-    // Product Database with Multiple Images
+    // প্রোডাক্ট ডাটাবেস
     const products = {
       "101": {
         name: "Argentina Home Jersey",
         price: "<del>1150</del> 1050 BDT",
+        fabric: "Mesh Fabric + Chinigura Fabric",
+        descTitle: " আর্জেন্টিনা হোম জার্সি ",
         images: [
           "Screenshot 2026-08-06 212148.png",
           "arg_back.png",
-          "arg_badge.png",
-          "arg_tag.png"
-        ],
-        details: "100% Polyester, breathable fabric, standard fit."
+          "arg_badge.png"
+        ]
       },
       "102": {
         name: "Real Madrid Home Jersey",
         price: "900 BDT",
+        fabric: "Mesh Fabric + Chinigura Fabric",
+        descTitle: " রিয়াল মাদ্রিদ জার্সি ",
         images: [
           "Screenshot 2026-08-06 215419.png",
           "real_back.png",
           "real_collar.png",
           "real_badge.png"
-        ],
-        details: "Official club crest, moisture-absorbing AEROREADY technology."
+        ]
       },
       "103": {
         name: "Barcelona Home Jersey",
         price: "900 BDT",
+        fabric: "Mesh Fabric + Chinigura Fabric",
+        descTitle: " বার্সেলোনা হোম জার্সি ",
         images: [
           "Screenshot 2026-08-07 100954.png",
-          "barca_back.png",
-          "barca_crest.png"
-        ],
-        details: "Lightweight fabric, classic striped design."
+          "barca_back.png"
+        ]
       }
     };
 
-    // Extract product ID from URL
+    // URL থেকে Product ID সংগ্রহ
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
 
-    // Display Product Details & Render Image Gallery
+    // পেজে ডাটা লোড করা
     if (products[productId]) {
       const product = products[productId];
 
       document.getElementById('jersey-title').innerText = product.name;
       document.getElementById('jersey-price').innerHTML = product.price;
-      document.getElementById('jersey-details').innerText = product.details;
+      document.getElementById('jersey-fabric').innerText = product.fabric;
+      document.getElementById('desc-title').innerText = product.descTitle;
 
-      // Set Main Image
+      // মেইন ইমেজ
       const mainImg = document.getElementById('jersey-img');
       mainImg.src = product.images[0];
 
-      // Render Thumbnails
+      // থাম্বনেইল লোড
       const thumbContainer = document.getElementById('thumbnail-list');
       thumbContainer.innerHTML = '';
 
@@ -171,7 +332,7 @@
         thumb.src = imgUrl;
         thumb.className = index === 0 ? 'thumbnail active' : 'thumbnail';
         
-        // Switch main image when thumbnail is clicked
+        // ছবি ক্লিক করলে মেইন ছবি পরিবর্তন হবে
         thumb.onclick = function() {
           mainImg.src = imgUrl;
           document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
@@ -185,7 +346,7 @@
       document.getElementById('jersey-title').innerText = "Product Not Found";
     }
 
-    // Redirect to Checkout Page
+    // চেকআউট পেজে রিডাইরেক্ট
     function goToCheckout() {
       const selectedSize = document.getElementById('size').value;
       if (productId) {
