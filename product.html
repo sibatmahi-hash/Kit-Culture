@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details</title>
   <style>
     body { 
@@ -52,6 +53,28 @@
     }
     .thumbnail.active, .thumbnail:hover {
       border-color: #f57224;
+    }
+    /* Mobile Responsive Styles */
+    @media (max-width: 600px) {
+      .container {
+        flex-direction: column;
+        gap: 20px;
+      }
+      #jersey-img {
+        width: 100%;
+        height: auto;
+      }
+      .thumbnail-list {
+        max-width: 100%;
+      }
+      .details {
+        max-width: 100%;
+      }
+      .buy-btn {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+      }
     }
   </style>
 </head>
