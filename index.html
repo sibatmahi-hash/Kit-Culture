@@ -2,37 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.75">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jersey Store - Home</title>
     <style>
-        .product-grid { display: flex; flex-wrap: wrap; gap: 20px; font-family: sans-serif; }
-        .product-card { border: 1px solid #ccc; padding: 15px; border-radius: 8px; text-decoration: none; color: #333; width: 200px; display: block; }
-        .product-card img { width: 100%; border-radius: 5px; }
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 20px; 
+            font-family: sans-serif; 
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .product-card { 
+            border: 1px solid #ccc; 
+            padding: 15px; 
+            border-radius: 8px; 
+            text-decoration: none; 
+            color: #333; 
+            display: block; 
+            box-sizing: border-box;
+        }
+
+        .product-card img { 
+            width: 100%; 
+            height: auto;
+            border-radius: 5px; 
+        }
     </style>
 </head>
 <body>
-  <h1>Featured Jerseys</h1>
+    <h1>Featured Jerseys</h1>
 
-  <div class="product-grid">
-    <!-- Passing product ID in URL using href -->
-    <a href="product.html?id=101" class="product-card">
-      <img src="Screenshot 2026-08-06 212148.png" alt="Argentina Home Jersey">
-      <h3>Argentina Home Jersey</h3>
-      <h4>price:<del>1150</del><br>1050</h4>
-    </a>
+    <div class="product-grid">
+        <!-- Passing product ID in URL using href -->
+        <a href="product.html?id=101" class="product-card">
+            <img src="Screenshot 2026-08-06 212148.png" alt="Argentina Home Jersey">
+            <h3>Argentina Home Jersey</h3>
+            <h4>price:<del>1150</del><br>1050</h4>
+        </a>
 
-    <a href="product.html?id=102" class="product-card">
-      <img src="Screenshot 2026-08-06 215419.png" alt="Real Madrid Home Jersey">
-      <h3>Real Madrid Home Jersey</h3>
-     <h4>price:<del>1150</del><br>1050</h4>
-    </a>
-     <a href="product.html?id=103" class="product-card">
-      <img src="Screenshot 2026-08-07 100954.png" alt="Barcelona Home Jersey">
-      <h3>Barcelona Home Jersey</h3>
-      <h4>price:<del>1150</del><br>1050</h4>
-    </a>
+        <a href="product.html?id=102" class="product-card">
+            <img src="Screenshot 2026-08-06 215419.png" alt="Real Madrid Home Jersey">
+            <h3>Real Madrid Home Jersey</h3>
+            <h4>price:<del>1150</del><br>1050</h4>
+        </a>
 
-  </div>
-
+        <a href="product.html?id=103" class="product-card">
+            <img src="Screenshot 2026-08-07 100954.png" alt="Barcelona Home Jersey">
+            <h3>Barcelona Home Jersey</h3>
+            <h4>price:<del>1150</del><br>1050</h4>
+        </a>
+    </div>
 </body>
 </html>
